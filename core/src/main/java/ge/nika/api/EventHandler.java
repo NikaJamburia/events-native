@@ -1,4 +1,4 @@
-package ge.nika.handler;
+package ge.nika.api;
 
 import ge.nika.event.EventCarrier;
 

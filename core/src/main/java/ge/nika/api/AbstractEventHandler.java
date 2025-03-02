@@ -2,7 +2,6 @@ package ge.nika.api;
 
 import ge.nika.event.EventCarrier;
 import ge.nika.Utils;
-import ge.nika.handler.EventHandler;
 
 public abstract class AbstractEventHandler<T extends Event> implements EventHandler {
     @Override
