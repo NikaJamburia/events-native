@@ -19,6 +19,5 @@ public class EventHandlersRunner {
         if (handlers != null) {
             handlers.forEach(eventHandler -> eventHandler.accept(eventCarrier));
         }
-
     }
 }
