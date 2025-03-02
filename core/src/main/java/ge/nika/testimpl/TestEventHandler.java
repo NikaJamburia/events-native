@@ -5,12 +5,12 @@ import ge.nika.api.AbstractEventHandler;
 public class TestEventHandler extends AbstractEventHandler<TestEvent> {
 
     @Override
-    protected void handle(TestEvent eventData) {
-        System.out.println("Handling " + eventData);
+    protected void handle(TestEvent event) {
+        System.out.println("Handling " + event);
     }
 
     @Override
-    protected Class<TestEvent> handledEventClassName() {
+    protected Class<TestEvent> handledEventClass() {
         return TestEvent.class;
     }
 }

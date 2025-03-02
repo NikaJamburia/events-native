@@ -15,7 +15,10 @@ public class EventHandlersRunner {
     }
 
     public void runHandlers(EventCarrier eventCarrier) {
-        handlersMap.get(eventCarrier.eventClassName())
-                .forEach(eventHandler -> eventHandler.accept(eventCarrier));
+        List<EventHandler> handlers = handlersMap.get(eventCarrier.eventClassName());
+        if (handlers != null) {
+            handlers.forEach(eventHandler -> eventHandler.accept(eventCarrier));
+        }
+
     }
 }

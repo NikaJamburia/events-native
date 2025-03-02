@@ -39,7 +39,7 @@ public class EventQueue {
     public EventCarrier take() throws InterruptedException {
         lock.lock();
         try {
-            while (queue.size() == 0) {
+            while (queue.isEmpty()) {
                 notEmpty.await();
             }
             EventCarrier eventCarrier = queue.remove();

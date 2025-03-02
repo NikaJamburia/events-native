@@ -7,15 +7,15 @@ import ge.nika.handler.EventHandler;
 public abstract class AbstractEventHandler<T extends Event> implements EventHandler {
     @Override
     public void accept(EventCarrier eventCarrier) {
-        T eventData = Utils.fromJson(eventCarrier.jsonData(), handledEventClassName());
+        T eventData = Utils.fromJson(eventCarrier.jsonData(), handledEventClass());
         handle(eventData);
     }
 
     @Override
     public String eventClassName() {
-        return handledEventClassName().getName();
+        return handledEventClass().getName();
     }
 
-    protected abstract Class<T> handledEventClassName();
-    protected abstract void handle(T eventData);
+    protected abstract Class<T> handledEventClass();
+    protected abstract void handle(T event);
 }

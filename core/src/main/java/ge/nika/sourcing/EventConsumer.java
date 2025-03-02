@@ -32,7 +32,5 @@ public class EventConsumer {
     public void stop() {
         System.out.println("Stopping event consumer");
         thread.interrupt();
-        var snapshot = eventQueue.getQueueSnapshot();
-        System.out.println("Events still in queue: " + snapshot);
     }
 }
