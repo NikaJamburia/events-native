@@ -1,7 +1,7 @@
 package ge.nika;
 
-import ge.nika.api.Event;
-import ge.nika.api.EventPublisher;
+import ge.nika.api.model.Event;
+import ge.nika.api.model.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

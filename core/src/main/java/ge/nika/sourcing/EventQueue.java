@@ -1,8 +1,7 @@
 package ge.nika.sourcing;
 
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.EventCarrier;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;

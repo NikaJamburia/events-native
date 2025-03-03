@@ -1,7 +1,6 @@
-package ge.nika.event;
+package ge.nika.api.model;
 
 import ge.nika.Utils;
-import ge.nika.api.Event;
 
 public record EventCarrier(String eventClassName, String jsonData) {
 

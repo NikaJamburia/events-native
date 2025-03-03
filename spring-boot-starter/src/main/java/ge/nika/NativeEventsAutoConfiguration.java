@@ -1,7 +1,7 @@
 package ge.nika;
 
-import ge.nika.api.EventHandler;
-import ge.nika.api.EventPublisher;
+import ge.nika.api.model.EventHandler;
+import ge.nika.api.model.EventPublisher;
 import ge.nika.handler.EventHandlersRunner;
 import ge.nika.sourcing.DefaultEventPublisher;
 import ge.nika.sourcing.EventConsumer;

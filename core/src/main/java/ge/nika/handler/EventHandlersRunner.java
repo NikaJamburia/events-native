@@ -1,7 +1,7 @@
 package ge.nika.handler;
 
-import ge.nika.api.EventHandler;
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.EventHandler;
+import ge.nika.api.model.EventCarrier;
 
 import java.util.List;
 import java.util.Map;

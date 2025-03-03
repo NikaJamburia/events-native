@@ -26,7 +26,7 @@ public class EventConsumerTest {
         // Events were consumed
         assertEquals(0, eventQueue.getQueueSnapshot().size());
 
-        subject.stop();
+        subject.shutdown();
         eventQueue.add(randomEventCarrier());
         Thread.sleep(1000);
 

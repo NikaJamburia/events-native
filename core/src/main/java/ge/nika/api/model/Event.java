@@ -1,4 +1,4 @@
-package ge.nika.api;
+package ge.nika.api.model;
 
 public interface Event {
 }

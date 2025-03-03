@@ -1,6 +1,6 @@
 package ge.nika;
 
-import ge.nika.api.EventPublisher;
+import ge.nika.api.model.EventPublisher;
 import ge.nika.handler.EventHandlersRunner;
 import ge.nika.sourcing.EventConsumer;
 import ge.nika.sourcing.DefaultEventPublisher;
@@ -24,7 +24,7 @@ public class Main {
         consumer.start();
         Thread.sleep(1000);
         publisher.shutDown();
-        consumer.stop();
+        consumer.shutdown();
     }
 
 }

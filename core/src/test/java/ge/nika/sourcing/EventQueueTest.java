@@ -1,13 +1,11 @@
 package ge.nika.sourcing;
 
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.EventCarrier;
 import ge.nika.testimpl.TestEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 import static ge.nika.sourcing.TestUtils.randomEventCarrier;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,6 +1,8 @@
 package ge.nika.api;
 
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.Event;
+import ge.nika.api.model.EventHandler;
+import ge.nika.api.model.EventCarrier;
 import ge.nika.Utils;
 
 public abstract class AbstractEventHandler<T extends Event> implements EventHandler {

@@ -1,8 +1,8 @@
 package ge.nika.sourcing;
 
-import ge.nika.api.Event;
-import ge.nika.api.EventPublisher;
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.Event;
+import ge.nika.api.model.EventPublisher;
+import ge.nika.api.model.EventCarrier;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,10 +19,14 @@ public class DefaultEventPublisher implements EventPublisher {
 
     @Override
     public void publish(Event event) {
-        var carrier = EventCarrier.of(event);
+        publish(EventCarrier.of(event));
+    }
+
+    @Override
+    public void publish(EventCarrier eventCarrier) {
         executor.submit(() -> {
             try {
-                eventQueue.add(carrier);
+                eventQueue.add(eventCarrier);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

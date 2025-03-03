@@ -1,6 +1,4 @@
-package ge.nika.api;
-
-import ge.nika.event.EventCarrier;
+package ge.nika.api.model;
 
 public interface EventHandler {
     void accept(EventCarrier eventCarrier);

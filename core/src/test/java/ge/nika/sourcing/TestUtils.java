@@ -1,7 +1,6 @@
 package ge.nika.sourcing;
 
-import ge.nika.api.Event;
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.EventCarrier;
 import ge.nika.testimpl.TestEvent;
 
 import java.util.Random;

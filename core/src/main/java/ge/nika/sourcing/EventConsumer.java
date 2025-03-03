@@ -1,6 +1,6 @@
 package ge.nika.sourcing;
 
-import ge.nika.event.EventCarrier;
+import ge.nika.api.model.EventCarrier;
 import ge.nika.handler.EventHandlersRunner;
 
 public class EventConsumer {
@@ -29,7 +29,7 @@ public class EventConsumer {
         thread.start();
     }
 
-    public void stop() {
+    public void shutdown() {
         System.out.println("Stopping event consumer");
         thread.interrupt();
     }
