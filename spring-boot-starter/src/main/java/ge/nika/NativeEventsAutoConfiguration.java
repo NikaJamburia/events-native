@@ -2,7 +2,10 @@ package ge.nika;
 
 import ge.nika.api.model.EventHandler;
 import ge.nika.api.model.EventPublisher;
+import ge.nika.api.persistence.EventQueueSnapshotRepository;
+import ge.nika.api.service.NativeEventsService;
 import ge.nika.handler.EventHandlersRunner;
+import ge.nika.persistence.NonSavingEventQueueSnapshotRepository;
 import ge.nika.sourcing.DefaultEventPublisher;
 import ge.nika.sourcing.EventConsumer;
 import ge.nika.sourcing.EventQueue;
@@ -42,5 +45,23 @@ public class NativeEventsAutoConfiguration {
     @Bean
     public EventConsumer eventConsumer(EventQueue eventQueue, EventHandlersRunner eventHandlersRunner) {
         return new EventConsumer(eventQueue, eventHandlersRunner);
+    }
+
+    @Bean
+    public EventQueueSnapshotRepository eventQueueSnapshotRepository() {
+        return switch (properties.eventQueueSnapshotPersistenceStrategy()) {
+            case NO_PERSISTENCE -> new NonSavingEventQueueSnapshotRepository();
+            case PERSIST_TO_FILE -> throw new IllegalArgumentException("Saving to file not supported yet");
+        };
+    }
+
+    @Bean
+    public NativeEventsService nativeEventsService(
+        EventConsumer eventConsumer,
+        EventPublisher eventPublisher,
+        EventQueue eventQueue,
+        EventQueueSnapshotRepository eventQueueSnapshotRepository
+    ) {
+        return new NativeEventsService(eventConsumer, eventPublisher, eventQueue, eventQueueSnapshotRepository);
     }
 }
