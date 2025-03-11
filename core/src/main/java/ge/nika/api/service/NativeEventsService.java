@@ -8,6 +8,7 @@ import ge.nika.sourcing.EventQueue;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class NativeEventsService {
 
@@ -44,11 +45,17 @@ public class NativeEventsService {
             return;
         }
 
-        eventPublisher.shutDown();
+        var unpublishedEvents = eventPublisher.shutdown();
         eventConsumer.shutdown();
+        var queueSnapshot = eventQueue.getQueueSnapshot();
+
+        var unConsumedEvents = Stream.concat(
+            queueSnapshot.stream(),
+            unpublishedEvents.stream()
+        ).toList();
 
         eventQueueSnapshotRepository.save(
-            new EventQueueSnapshot(UUID.randomUUID(), timestamp, eventQueue.getQueueSnapshot())
+            new EventQueueSnapshot(UUID.randomUUID(), timestamp, unConsumedEvents)
         );
 
         wasShutdown = true;

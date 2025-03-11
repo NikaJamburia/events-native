@@ -23,7 +23,7 @@ public class Main {
 
         consumer.start();
         Thread.sleep(1000);
-        publisher.shutDown();
+        publisher.shutdown();
         consumer.shutdown();
     }
 

@@ -1,5 +1,6 @@
 package ge.nika.api.service;
 
+import ge.nika.api.model.EventCarrier;
 import ge.nika.api.persistence.EventQueueSnapshot;
 import ge.nika.api.persistence.EventQueueSnapshotRepository;
 import ge.nika.handler.EventHandlersRunner;
@@ -9,6 +10,7 @@ import ge.nika.sourcing.EventQueue;
 import ge.nika.sourcing.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.time.Instant;
@@ -77,6 +79,17 @@ public class NativeEventsServiceTest {
         var eventConsumer = Mockito.mock(EventConsumer.class);
         var eventPublisher = Mockito.mock(DefaultEventPublisher.class);
 
+        var eventsInEventQueue = List.of(
+                TestUtils.randomEventCarrier(),
+                TestUtils.randomEventCarrier()
+        );
+
+        var eventsInPublisher = List.of(
+                TestUtils.randomEventCarrier(),
+                TestUtils.randomEventCarrier(),
+                TestUtils.randomEventCarrier()
+        );
+
         var subject = new NativeEventsService(
                 eventConsumer,
                 eventPublisher,
@@ -84,12 +97,20 @@ public class NativeEventsServiceTest {
                 eventQueueSnapshotRepository
         );
 
-        Mockito.when(eventQueue.getQueueSnapshot()).thenReturn(List.of());
+        ArgumentCaptor<EventQueueSnapshot> snapshotCaptor = ArgumentCaptor.forClass(EventQueueSnapshot.class);
+
+        Mockito.when(eventQueue.getQueueSnapshot()).thenReturn(eventsInEventQueue);
+        Mockito.when(eventPublisher.shutdown()).thenReturn(eventsInPublisher);
 
         subject.shutdown(Instant.now());
 
-        Mockito.verify(eventPublisher).shutDown();
+        Mockito.verify(eventPublisher).shutdown();
         Mockito.verify(eventConsumer).shutdown();
-        Mockito.verify(eventQueueSnapshotRepository).save(Mockito.any());
+        Mockito.verify(eventQueueSnapshotRepository).save(snapshotCaptor.capture());
+
+        var snapshotEvents = snapshotCaptor.getValue().events();
+        Assertions.assertEquals(5, snapshotEvents.size());
+        Assertions.assertTrue(snapshotEvents.containsAll(eventsInEventQueue));
+        Assertions.assertTrue(snapshotEvents.containsAll(eventsInPublisher));
     }
 }

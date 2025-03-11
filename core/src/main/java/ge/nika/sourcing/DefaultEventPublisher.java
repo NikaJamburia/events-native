@@ -28,7 +28,7 @@ public class DefaultEventPublisher implements EventPublisher {
     }
 
     @Override
-    public List<EventCarrier> shutDown() {
+    public List<EventCarrier> shutdown() {
         var queuedTasks = executor.shutdownNow();
 
         var queuedEventCarriers = queuedTasks

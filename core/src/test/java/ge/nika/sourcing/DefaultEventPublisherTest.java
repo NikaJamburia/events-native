@@ -48,7 +48,7 @@ public class DefaultEventPublisherTest {
         // shutdown will return event 3 and 4 as they are waiting in executors queue
 
         Thread.sleep(100);
-        var result = subject.shutDown();
+        var result = subject.shutdown();
 
         assertEquals(2, result.size());
         assertTrue(result.contains(event3));
