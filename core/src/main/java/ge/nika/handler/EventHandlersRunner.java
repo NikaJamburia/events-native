@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EventHandlersRunner {
-    private Map<String, List<EventHandler>> handlersMap;
+    private final Map<String, List<EventHandler>> handlersMap;
 
     public EventHandlersRunner(List<EventHandler> handlers) {
         handlersMap = handlers.stream()

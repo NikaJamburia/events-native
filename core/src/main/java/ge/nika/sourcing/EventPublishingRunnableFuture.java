@@ -1,12 +1,15 @@
 package ge.nika.sourcing;
 
+import ge.nika.api.model.EventCarrier;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 public class EventPublishingRunnableFuture<T> extends FutureTask<T> {
 
-    public EventPublishingRunnable getWrappedRunnable() {
-        return wrappedRunnable;
+    public EventCarrier getWrappedEventCarrier() {
+        assert wrappedRunnable != null;
+        return wrappedRunnable.getEventCarrier();
     }
 
     private final EventPublishingRunnable wrappedRunnable;

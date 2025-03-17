@@ -3,17 +3,19 @@ package ge.nika.sourcing;
 import ge.nika.api.model.Event;
 import ge.nika.api.model.EventPublisher;
 import ge.nika.api.model.EventCarrier;
+import ge.nika.handler.EventHandlersRunner;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 public class DefaultEventPublisher implements EventPublisher {
 
-    private final ExecutorService executor = EventPublishingThreadExecutorService.singleThreaded();
-    private final EventQueue eventQueue;
+    private final EventPublishingThreadExecutorService executor = EventPublishingThreadExecutorService.singleThreaded();
+    private final EventHandlersRunner eventHandlersRunner;
 
-    public DefaultEventPublisher(EventQueue eventQueue) {
-        this.eventQueue = eventQueue;
+    public DefaultEventPublisher(EventHandlersRunner eventHandlersRunner) {
+        this.eventHandlersRunner = eventHandlersRunner;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class DefaultEventPublisher implements EventPublisher {
 
     @Override
     public void publish(EventCarrier eventCarrier) {
-        var runnable = new EventPublishingRunnable(eventCarrier, eventQueue);
+        var runnable = new EventPublishingRunnable(eventCarrier, eventHandlersRunner);
         executor.submit(runnable);
     }
 
@@ -31,10 +33,7 @@ public class DefaultEventPublisher implements EventPublisher {
     public List<EventCarrier> shutdown() {
         var queuedTasks = executor.shutdownNow();
 
-        var queuedEventCarriers = queuedTasks
-                .stream()
-                .map(it -> ((EventPublishingRunnableFuture) it).getWrappedRunnable().getEventCarrier())
-                .toList();
+        var queuedEventCarriers = getEventCarriers(queuedTasks.stream());
 
         try {
             executor.awaitTermination(1000L, TimeUnit.MILLISECONDS);
@@ -42,5 +41,17 @@ public class DefaultEventPublisher implements EventPublisher {
             throw new RuntimeException(e);
         }
         return queuedEventCarriers;
+    }
+
+    public List<EventCarrier> getEventQueueSnapshot() {
+        return getEventCarriers(executor.getQueue().stream());
+
+    }
+
+    private List<EventCarrier> getEventCarriers(Stream<Runnable> runnables) {
+        return runnables
+                .map(r -> (EventPublishingRunnableFuture) r)
+                .map(EventPublishingRunnableFuture::getWrappedEventCarrier)
+                .toList();
     }
 }

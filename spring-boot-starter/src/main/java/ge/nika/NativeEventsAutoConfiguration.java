@@ -7,8 +7,6 @@ import ge.nika.api.service.NativeEventsService;
 import ge.nika.handler.EventHandlersRunner;
 import ge.nika.persistence.NonSavingEventQueueSnapshotRepository;
 import ge.nika.sourcing.DefaultEventPublisher;
-import ge.nika.sourcing.EventConsumer;
-import ge.nika.sourcing.EventQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -28,23 +26,13 @@ public class NativeEventsAutoConfiguration {
     }
 
     @Bean
-    public EventQueue eventQueue() {
-        return new EventQueue(properties.eventQueueSize());
-    }
-
-    @Bean
-    public EventPublisher eventPublisher(EventQueue eventQueue) {
-        return new DefaultEventPublisher(eventQueue);
-    }
-
-    @Bean
-    public EventHandlersRunner EventHandlersRunner(List<EventHandler> eventHandlers) {
+    public EventHandlersRunner eventHandlersRunner(List<EventHandler> eventHandlers) {
         return new EventHandlersRunner(eventHandlers);
     }
 
     @Bean
-    public EventConsumer eventConsumer(EventQueue eventQueue, EventHandlersRunner eventHandlersRunner) {
-        return new EventConsumer(eventQueue, eventHandlersRunner);
+    public EventPublisher eventPublisher(EventHandlersRunner eventHandlersRunner) {
+        return new DefaultEventPublisher(eventHandlersRunner);
     }
 
     @Bean
@@ -57,11 +45,9 @@ public class NativeEventsAutoConfiguration {
 
     @Bean
     public NativeEventsService nativeEventsService(
-        EventConsumer eventConsumer,
         EventPublisher eventPublisher,
-        EventQueue eventQueue,
         EventQueueSnapshotRepository eventQueueSnapshotRepository
     ) {
-        return new NativeEventsService(eventConsumer, eventPublisher, eventQueue, eventQueueSnapshotRepository);
+        return new NativeEventsService( eventPublisher, eventQueueSnapshotRepository);
     }
 }

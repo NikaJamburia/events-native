@@ -10,5 +10,4 @@ public record EventQueueSnapshot(
         UUID id,
         Instant timestamp,
         List<EventCarrier> events
-) {
-}
+) { }

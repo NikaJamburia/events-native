@@ -1,25 +1,20 @@
 package ge.nika.sourcing;
 
 import ge.nika.api.model.EventCarrier;
+import ge.nika.handler.EventHandlersRunner;
 
 public class EventPublishingRunnable implements Runnable {
     private final EventCarrier eventCarrier;
-    private final EventQueue eventQueue;
+    private final EventHandlersRunner eventHandlersRunner;
 
-    public EventPublishingRunnable(EventCarrier eventCarrier, EventQueue eventQueue) {
+    public EventPublishingRunnable(EventCarrier eventCarrier, EventHandlersRunner eventHandlersRunner) {
         this.eventCarrier = eventCarrier;
-        this.eventQueue = eventQueue;
+        this.eventHandlersRunner = eventHandlersRunner;
     }
 
     @Override
     public void run() {
-        try {
-            eventQueue.add(eventCarrier);
-        } catch (InterruptedException e) {
-            // This causes single event that is being published atm of interruption to be lost,
-            // but i just dont care enough to fix this
-            e.printStackTrace();
-        }
+        eventHandlersRunner.runHandlers(eventCarrier);
     }
 
     public EventCarrier getEventCarrier() {
